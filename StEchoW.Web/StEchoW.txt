@@ -1,0 +1,3 @@
+St: static files
+Echo: echoes current request
+W: Websockets (SignalR)

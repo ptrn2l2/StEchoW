@@ -1,0 +1,89 @@
+﻿@page
+@model IndexModel
+
+@{
+    Layout = null;
+    ViewData["Title"] = "Home page";
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>StEchoW</title>
+</head>
+<body>
+
+
+<pre>
+Server id: @Model.ContainerId
+
+@if (Model.XForwardedHost != string.Empty)
+{
+<text>Host: @Model.XForwardedHost
+Real Host: @Model.RequestHost
+</text>
+}
+else
+{
+<text>Host: @Model.RequestHost
+</text>
+}
+@* ServerAddressList not shwed *@
+@if (Model.ClientAddresses.Count > 1)
+{
+    <text>
+Client:
+@foreach (var cAddr in Model.ClientAddresses)
+{
+    <text>
+    @cAddr
+    </text>
+}
+    </text>
+}
+else if (Model.ClientAddresses.Count == 1)
+{
+    <text>
+Client:  @Model.ClientAddresses[0]
+    </text>
+}
+
+@(Model.RequestScheme)
+@Model.RequestProtocol @Model.RequestMethod @(Model.RequestPath)
+
+@foreach (var hdr in Model.RequestHeaders)
+{
+    if (hdr.Key.StartsWith("Cookie", StringComparison.OrdinalIgnoreCase))
+    {
+        continue;
+    }
+    if (hdr.Value.Count == 0)
+    {
+        <text>@(hdr.Key):
+</text>
+    }
+    else if (hdr.Value.Count == 1)
+    {
+        <text>@(hdr.Key): @(hdr.Value[0])
+</text>
+    }
+    else
+    {
+        <text>@(hdr.Key):
+@foreach (string hVal in hdr.Value)
+{
+    <text>@hVal
+</text>
+}
+</text>
+    }
+}
+
+@Model.RequestBodyStr
+</pre >
+
+</body>
+</html>
