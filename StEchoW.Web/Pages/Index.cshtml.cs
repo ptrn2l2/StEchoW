@@ -35,7 +35,6 @@ namespace StEchoW.Web.Pages
 
         public string RequestBodyStr {get;set;}
 
-
         public IndexModel(ILogger<IndexModel> logger)
         {
             _logger = logger;
@@ -51,6 +50,7 @@ namespace StEchoW.Web.Pages
             // ...but, if behind a Proxy, the client requested:
             XForwardedHost = Request.Headers["X-Forwarded-Host"].FirstOrDefault() ?? string.Empty;
             
+            // ServerAddressList will not be echoed
             ServerAddressList = (await Dns.GetHostEntryAsync(ContainerId)).AddressList;
             
             using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
@@ -90,8 +90,83 @@ namespace StEchoW.Web.Pages
 
 
             RequestScheme = request.Scheme;
-            // request.Cookies will not be echoed for security reasons
         }
+        
+        public string BuildAllinfos(bool bEchoAll = false)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"Server id: {ContainerId}");
+            sb.AppendLine();
+            if (XForwardedHost != string.Empty)
+            {
+                sb.AppendLine($"Host: {XForwardedHost} ({RequestHost})");
+            }
+            else
+            {
+                sb.AppendLine($"Host: {RequestHost}");
+            }
 
-    }
+            if (bEchoAll)
+            {
+                int iMax = ServerAddressList.Length;
+                if (iMax > 0)
+                {
+                    sb.AppendLine("Host IP(s):");
+                    sb.AppendLine($"    {ServerAddressList[0]}");
+                    for (int i = 1; i < iMax; ++i)
+                    {
+                        sb.AppendLine($"    {ServerAddressList[i]}");
+                    }
+                }
+            }
+
+            if (ClientAddresses.Count > 1)
+            {
+                sb.AppendLine("Client:");
+                foreach (var cAddr in ClientAddresses)
+                {
+                    sb.AppendLine($"    {cAddr}");
+                }
+            }
+            else if (ClientAddresses.Count == 1)
+            {
+                sb.AppendLine($"Client: {ClientAddresses[0]}");
+            }
+
+            sb.AppendLine();
+            sb.AppendLine($"{RequestScheme}");
+            sb.AppendLine($"{RequestProtocol} {RequestMethod} {RequestPath}");
+
+            foreach (var hdr in RequestHeaders)
+            {
+                if (hdr.Key.StartsWith("Cookie", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (!bEchoAll)
+                    {
+                        sb.AppendLine("Cookie=(...)");
+                        // request.Cookies should not be echoed for security reasons
+                        continue;
+                    }
+                }
+
+                if (hdr.Value.Count == 0)
+                {
+                    sb.AppendLine($"{hdr.Key}=");
+                }
+                else if (hdr.Value.Count == 1)
+                {
+                    sb.AppendLine($"{hdr.Key}={hdr.Value[0]}");
+                }
+                else
+                {
+                    sb.AppendLine(string.Join('&', $"{hdr.Key}={hdr.Value}"));
+                }
+            }
+
+            sb.AppendLine();
+            sb.AppendLine($"{RequestBodyStr}");
+            sb.AppendLine();
+            return sb.ToString();
+        }
+    } // class
 }
