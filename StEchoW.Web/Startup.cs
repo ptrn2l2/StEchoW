@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using StEchoW.Web.Hubs;
 
 namespace StEchoW.Web
 {
@@ -24,6 +25,7 @@ namespace StEchoW.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,7 +46,11 @@ namespace StEchoW.Web
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
-            app.UseEndpoints(endpoints => { endpoints.MapRazorPages(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapRazorPages();
+                endpoints.MapHub<ChatHub>("/chatep");
+            });
         }
     }
 }
