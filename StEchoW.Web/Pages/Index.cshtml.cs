@@ -60,6 +60,7 @@ namespace StEchoW.Web.Pages
             }
 
             RequestHost = request.Host;
+            // var requestHostLocationUri = request.Host.ToUriComponent();
             RequestMethod = request.Method;
             RequestProtocol = request.Protocol;
             var forwardedPath = request.Headers["X-Forwarded-Path"].FirstOrDefault();
@@ -99,11 +100,11 @@ namespace StEchoW.Web.Pages
             sb.AppendLine();
             if (XForwardedHost != string.Empty)
             {
-                sb.AppendLine($"Host: {XForwardedHost} ({RequestHost})");
+                sb.AppendLine($"Host: {XForwardedHost} ({RequestHost.ToString()})");
             }
             else
             {
-                sb.AppendLine($"Host: {RequestHost}");
+                sb.AppendLine($"Host: {RequestHost.ToString()}");
             }
 
             if (bEchoAll)
