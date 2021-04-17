@@ -2,6 +2,15 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StEchoW.Web", "StEchoW.Web\StEchoW.Web.csproj", "{6B646CA4-1D88-41A1-971A-A385ADD50786}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker_build_files", "docker_build_files", "{F8BF25C1-58A7-4BC6-BEAA-43EB181282ED}"
+ProjectSection(SolutionItems) = preProject
+	.dockerignore = .dockerignore
+	.gitignore = .gitignore
+	Dockerfile = Dockerfile
+	bake_amd64_armhf_arm64.hcl = bake_amd64_armhf_arm64.hcl
+	bake_amd64_armhf_arm64.sh = bake_amd64_armhf_arm64.sh
+EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
