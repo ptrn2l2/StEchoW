@@ -42,8 +42,31 @@ namespace StEchoW.Web
                 // app.UseHsts();
             }
 
+            // -------------------------------
+            // I want http and https!
             // app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            // -------------------------------
+            
+            // ReSharper disable once HeapView.ObjectAllocation.Evident
+            app.UseStaticFiles(new StaticFileOptions() {
+                // To serve extensionless files (needed for "let's encrypt"'s certbot)
+                // we must serve unknown file types
+                // ------------------------------------------------------------------------
+                // NOTE: in other project I don't go this way, but
+                // I add the following action to HomeController (or any other one)
+                //      [AllowAnonymous]
+                //      [HttpGet]
+                //      [Route(".well-known/acme-challenge/{id}")]
+                //      public ActionResult LetsEncrypt(string id)
+                //      {
+                //          var file = Path.Combine(this.HostingEnv.WebRootPath, ".well-known", "acme-challenge", id);
+                //          return PhysicalFile(file, "text/plain");            
+                //      }
+                // ------------------------------------------------------------------------
+                DefaultContentType = "application/octet-stream",
+                ServeUnknownFileTypes = true,
+            });
+            
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>

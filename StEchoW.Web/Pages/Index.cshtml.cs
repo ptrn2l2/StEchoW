@@ -85,7 +85,7 @@ namespace StEchoW.Web.Pages
             }
             else
             {
-                IPAddress? remoteIpAddress = request.HttpContext.Connection.RemoteIpAddress;
+                IPAddress remoteIpAddress = request.HttpContext.Connection.RemoteIpAddress;
                 ClientAddresses.Add(remoteIpAddress?.ToString() ?? string.Empty);
             }
 

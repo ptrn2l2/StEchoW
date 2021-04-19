@@ -4,11 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StEchoW.Web", "StEchoW.Web\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker_build_files", "docker_build_files", "{F8BF25C1-58A7-4BC6-BEAA-43EB181282ED}"
 ProjectSection(SolutionItems) = preProject
-	.dockerignore = .dockerignore
 	.gitignore = .gitignore
-	Dockerfile = Dockerfile
-	bake_amd64_armhf_arm64.hcl = bake_amd64_armhf_arm64.hcl
-	bake_amd64_armhf_arm64.sh = bake_amd64_armhf_arm64.sh
 EndProjectSection
 EndProject
 Global
