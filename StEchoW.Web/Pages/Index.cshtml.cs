@@ -100,6 +100,7 @@ namespace StEchoW.Web.Pages
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"Server id: {ContainerId}");
+            sb.AppendLine($"Operating System: {OsDescription}");
             sb.AppendLine();
             if (XForwardedHost != string.Empty)
             {
