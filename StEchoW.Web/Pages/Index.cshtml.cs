@@ -18,10 +18,11 @@ namespace StEchoW.Web.Pages
     {
         private readonly ILogger<IndexModel> _logger;
 
-        public string ContainerId {get;set;}
+        public string ContainerId { get; set; }
         public HostString RequestHost { get; set; }
         public string XForwardedHost { get; set; }
 
+        public string OsDescription { get; set; }
 
         public IPAddress[] ServerAddressList { get; set; }
         public IList<string> ClientAddresses { get; set; }
@@ -43,6 +44,8 @@ namespace StEchoW.Web.Pages
         public async Task OnGet()
         {
             var request = Request;
+
+            OsDescription = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
 
             RequestHeaders = request.Headers;
             // Hostname...
